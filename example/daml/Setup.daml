@@ -1,0 +1,35 @@
+-- Bootstrap the sandbox with parties, users, and an initial Coin + CoinPoA
+-- so cnwla has realistic state to query and exercise against.
+-- Run via: dpm script --dar ... --script-name Setup:setup --ledger-host ... --ledger-port ...
+
+module Setup where
+
+import Daml.Script
+import Delegation
+
+setup : Script ()
+setup = do
+  issuer <- allocatePartyByHint (PartyIdHint "issuer")
+  alice  <- allocatePartyByHint (PartyIdHint "alice")
+  bob    <- allocatePartyByHint (PartyIdHint "bob")
+
+  issuerId <- validateUserId "issuer"
+  aliceId  <- validateUserId "alice"
+  bobId    <- validateUserId "bob"
+
+  _ <- createUser (User issuerId (Some issuer)) [CanActAs issuer]
+  _ <- createUser (User aliceId  (Some alice))  [CanActAs alice]
+  _ <- createUser (User bobId    (Some bob))    [CanActAs bob]
+
+  coinId <- submitMulti [issuer, alice] [] $ createCmd Coin with
+    issuer = issuer
+    owner = alice
+    amount = 100.0
+    delegates = [bob]
+
+  poaId <- submit alice $ createCmd CoinPoA with
+    principal = alice
+    attorney = bob
+
+  debug ("seeded: Coin=" <> show coinId <> " CoinPoA=" <> show poaId)
+  pure ()

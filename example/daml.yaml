@@ -1,0 +1,8 @@
+sdk-version: 3.4.11
+name: example
+version: 0.0.1
+source: daml
+dependencies:
+  - daml-prim
+  - daml-stdlib
+  - daml-script

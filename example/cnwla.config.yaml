@@ -1,0 +1,27 @@
+currentProfile: alice
+profiles:
+  sandbox:
+    participant: http://127.0.0.1:6864
+    auth:
+      mode: shared-secret
+    userId: participant_admin
+  issuer:
+    participant: http://127.0.0.1:6864
+    auth:
+      mode: shared-secret
+    userId: issuer
+  alice:
+    participant: http://127.0.0.1:6864
+    auth:
+      mode: shared-secret
+    userId: alice
+  bob:
+    participant: http://127.0.0.1:6864
+    auth:
+      mode: shared-secret
+    userId: bob
+  participant_admin:
+    participant: http://127.0.0.1:6864
+    auth:
+      mode: shared-secret
+    userId: participant_admin

@@ -1,0 +1,63 @@
+-- Delegation pattern:
+--   https://docs.digitalasset.com/build/3.5/sdlc-howtos/smart-contracts/develop/patterns/delegation.html
+-- A principal (Coin owner) grants an attorney the right to transfer the coin
+-- on their behalf via a CoinPoA (power of attorney).
+
+module Delegation where
+
+template Coin
+  with
+    issuer : Party
+    owner : Party
+    amount : Decimal
+    delegates : [Party]
+  where
+    signatory issuer, owner
+    observer delegates
+
+    ensure amount > 0.0
+
+    choice Transfer : ContractId TransferProposal
+      with newOwner : Party
+      controller owner
+      do create TransferProposal with coin = this, newOwner
+
+    choice Disclose : ContractId Coin
+      with newDelegates : [Party]
+      controller owner
+      do create this with delegates = delegates ++ newDelegates
+
+template TransferProposal
+  with
+    coin : Coin
+    newOwner : Party
+  where
+    signatory coin.issuer, coin.owner
+    observer newOwner
+
+    choice Accept : ContractId Coin
+      controller newOwner
+      do create coin with owner = newOwner, delegates = []
+
+    choice Reject : ()
+      controller newOwner
+      do pure ()
+
+template CoinPoA
+  with
+    principal : Party
+    attorney : Party
+  where
+    signatory principal
+    observer attorney
+
+    choice WithdrawPoA : ()
+      controller principal
+      do pure ()
+
+    nonconsuming choice TransferCoin : ContractId TransferProposal
+      with
+        coinId : ContractId Coin
+        newOwner : Party
+      controller attorney
+      do exercise coinId Transfer with newOwner
