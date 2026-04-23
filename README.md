@@ -22,7 +22,7 @@ Requirements: **Node 18+**, a Canton participant speaking JSON Ledger API v2.
 
 ---
 
-## 60-second quickstart
+## quickstart
 
 Run the bundled [`example/`](./example) — a delegation-pattern demo on `dpm sandbox`:
 
@@ -50,7 +50,7 @@ seeds a `Coin` + `CoinPoA`. See [example/README.md](./example/README.md).
 | `cnwla config show` | ✅ | Active config file path + selected profile |
 | `cnwla config list` | ✅ | List profiles; `*` marks `currentProfile` |
 | `cnwla config use <name>` | ✅ | Persist `currentProfile` to the active config file |
-| `cnwla init [url]` | ✅ | Bootstrap the config: auto-generate one profile per user on a participant |
+| `cnwla init [url]` | ❌ | Bootstrap the config: auto-generate one profile per user on a participant |
 | `cnwla parties ls` | ✅ | List allocated parties on the participant |
 | `cnwla query` | ✅ | Active-contracts search scoped to the profile's primary party; `--template` / `--where` / `--pick` / `--one` / `--count` / `--full` |
 | `cnwla create <template>` | ✅ | Submit a `CreateCommand`; positional `k=v` args or `--arg`, `--act-as`, `--pick`, `--full` |
