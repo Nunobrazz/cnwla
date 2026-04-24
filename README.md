@@ -11,7 +11,7 @@ ergonomic commands.
 ### From source (current only path until v0.1 ships)
 
 ```bash
-git clone https://github.com/<your-org>/cnwla
+git clone https://github.com/Nunobrazz/cnwla.git
 cd cnwla
 npm install
 npm run build
